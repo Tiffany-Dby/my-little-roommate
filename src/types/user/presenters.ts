@@ -1,18 +1,92 @@
-import { Expose } from "class-transformer";
-import { IsNumber, IsString } from "class-validator";
+import { Expose, Type } from "class-transformer";
+import { IsEmail, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { UserEntity } from "../../databases/mysql/user.entity";
+import { RentalPresenter } from "../rental/presenters";
+import { UserToRentalPresenter } from "../userToRental/presenters";
 
 export class UserPresenter {
   @Expose()
   @IsNumber()
-  id: UserEntity['id'];
+  @IsNotEmpty()
+  id: UserEntity["id"];
 
   @Expose()
   @IsString()
-  firstname: UserEntity['firstname'];
+  @IsNotEmpty()
+  firstName: UserEntity["firstName"];
 
-  // à vous de jouer
-  lastname: string;
-  email: string;
-  isActive: boolean;
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  lastName: UserEntity["lastName"];
+
+  @Expose()
+  @IsEmail()
+  @IsNotEmpty()
+  email: UserEntity["email"];
+
+  @Expose()
+  @IsNumber()
+  @IsNotEmpty()
+  age: UserEntity["age"];
+}
+
+export class UserLoginPresenter {
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  firstName: UserEntity["firstName"];
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  lastName: UserEntity["lastName"];
+
+  @Expose()
+  @IsEmail()
+  @IsNotEmpty()
+  email: UserEntity["email"];
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  refreshToken: string;
+}
+
+export class UserToRefreshAccessTokenPresenter {
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  firstName: UserEntity["firstName"];
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  lastName: UserEntity["lastName"];
+
+  @Expose()
+  @IsEmail()
+  @IsNotEmpty()
+  email: UserEntity["email"];
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  refreshToken: string;
+}
+
+export class UserToGetRentalsPresenter extends UserPresenter {
+  @Expose()
+  @Type(() => UserToRentalPresenter)
+  rentals: UserToRentalPresenter[];
 }

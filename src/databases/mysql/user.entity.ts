@@ -1,22 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from "typeorm";
+import { UserToRentalEntity } from "./userToRental.entity";
+import { UserCredentialsEntity } from "./userCredentials.entity";
 
 @Entity("users")
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 50 })
-  firstname: string;
+  @Column({ name: "first_name", length: 50 })
+  firstName: string;
 
-  // @Column({ length: 50 })
-  // lastname: string;
+  @Column({ name: "last_name", length: 50 })
+  lastName: string;
 
-  // @Column({ unique: true })
-  // email: string;
+  @Column({ unique: true })
+  email: string;
 
-  @Column()
-  password_hash: string; // grosse faille de sécurité -> à ne pas faire en prod -> A mettre dans une autre table avec une relation
+  @Column({ width: 3 })
+  age: number;
 
-  // @Column({ default: true })
-  // isActive: boolean;
+  @OneToMany(() => UserToRentalEntity, (userToRental) => userToRental.user)
+  rentals: UserToRentalEntity[];
+
+  @OneToOne(() => UserCredentialsEntity, (credentials) => credentials.user, {
+    cascade: true,
+  })
+  credentials: UserCredentialsEntity;
 }

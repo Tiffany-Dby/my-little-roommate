@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn src/server.ts"
+    "dev": "nodemon --watch src -e js,ts,json --exec \"ts-node-dev -r dotenv/config ./src/server.ts\""
   },
   "keywords": [],
   "author": "",
@@ -32,6 +32,7 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.7",
+    "nodemon": "^3.1.9",
     "jest": "^29.7.0",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
